@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="msg_coding_challenge:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/msg_coding_challenge_jar</output-path>
+    <root id="archive" name="msg_coding_challenge.jar">
+      <element id="module-output" name="msg_coding_challenge" />
+    </root>
+  </artifact>
+</component>
