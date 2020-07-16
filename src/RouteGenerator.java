@@ -19,10 +19,10 @@ public class RouteGenerator {
     public void optimizeRoute(List<Location> oldRoute) {
         ArrayList<Location> improvingRoute = new ArrayList<>(oldRoute);
         float improvingRouteLength = calculateRouteLength(improvingRoute);
-        ArrayList<Location> shuffledRoute = improvingRoute;
+        ArrayList<Location> shuffledRoute = new ArrayList<>(improvingRoute);
         float shuffledRouteLength = calculateRouteLength(shuffledRoute);
         int countRepeating = 0;
-        while (countRepeating < 100) {
+        while (countRepeating < currentBestRoute.size() * 5) {
             ArrayList<Location> swappedRoute = improveBySwapping(shuffledRoute, shuffledRouteLength);
             float swappedRouteLength = calculateRouteLength(swappedRoute);
             if (swappedRouteLength < improvingRouteLength) {
@@ -49,7 +49,6 @@ public class RouteGenerator {
         float improvingRouteLength = 0;
         float previousRouteLength = oldRouteLength;
         float differenceFactor = 1;
-        int count = 0;
         while (differenceFactor > 0.001) {
             for (int firstSwap = 1; firstSwap < improvingRoute.size() - 1; firstSwap++) {
                 for (int secondSwap = firstSwap + 1; secondSwap < improvingRoute.size(); secondSwap++) {
@@ -61,8 +60,6 @@ public class RouteGenerator {
                     }
                 }
             }
-            System.out.println(count);
-            count++;
             improvingRouteLength = calculateRouteLength(improvingRoute);
             differenceFactor = (100 - (improvingRouteLength * 100 / previousRouteLength)) / 100;
             previousRouteLength = improvingRouteLength;
@@ -122,7 +119,14 @@ public class RouteGenerator {
 
     private float calculateDistance(Location a, Location b) {
         float difference_y = abs(a.getY_axis() - b.getY_axis());
-        float difference_x = abs(a.getX_axis() - b.getX_axis());
+        float conversionFactorX;
+        if (a.getY_axis() < b.getY_axis()) {
+            conversionFactorX = ((55.0f - (a.getY_axis() + difference_y / 2)) * 100 / 10) / 100 * 14.84f ;
+        } else {
+            conversionFactorX = ((55.0f - (b.getY_axis() + difference_y / 2)) * 100 / 10) / 100 * 14.84f;
+        }
+        float difference_x = abs(a.getX_axis() - b.getX_axis()) * conversionFactorX;
+        difference_y *= 111.13f;
         return (float)sqrt(difference_x * difference_x + difference_y * difference_y);
     }
 

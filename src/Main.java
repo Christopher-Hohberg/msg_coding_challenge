@@ -9,9 +9,8 @@ public class Main {
     public static void main(String[] args) {
         try {
             RouteGenerator generator = new RouteGenerator(readNodesFromCSV());
-            UserInterface ui = new UserInterface();
+            UserInterface ui = new UserInterface(generator);
 
-            generator.optimizeRoute(generator.getCurrentBestRoute());
             ui.drawRoute(generator.getCurrentBestRoute(), generator.getBestRouteLength());
 
         } catch (Exception e) {

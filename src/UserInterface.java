@@ -8,12 +8,16 @@ import java.util.List;
 public class UserInterface extends JFrame {
     private final Shape[] germany = new Shape[16];
     private final ArrayList<Shape> routeShapes = new ArrayList<>();
+    RouteGenerator generator;
 
     JPanel drawings;
     JPanel menu;
-    JTextArea routeText;
 
-    public UserInterface() {
+    JTextArea routeText;
+    JButton reOptimize;
+
+    public UserInterface(RouteGenerator generator) {
+        this.generator = generator;
         initComponents();
         this.setVisible(true);
     }
@@ -35,10 +39,12 @@ public class UserInterface extends JFrame {
         germany[12] = new Line2D.Float(70, 360, 80, 600);
         germany[13] = new Line2D.Float(80, 600, 170, 615);
         germany[14] = new Line2D.Float(170, 615, 150, 750);
+
         this.setSize(850, 800);
         this.setResizable(false);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setTitle("RouteOptimizer");
+
         drawings = new JPanel() {
             @Override
             public void paint(Graphics g) {
@@ -64,33 +70,50 @@ public class UserInterface extends JFrame {
         drawings.setPreferredSize(new Dimension(650,800));
         drawings.setBackground(Color.green);
         drawings.setVisible(true);
-        menu = new JPanel();
-        menu.setPreferredSize(new Dimension(200,800));
-        menu.setBackground(Color.white);
+
         routeText = new JTextArea();
         routeText.setEditable(false);
         routeText.setVisible(true);
+
+        reOptimize = new JButton();
+        reOptimize.addActionListener(e -> {
+            float startTime = System.nanoTime();
+            generator.optimizeRoute(generator.getCurrentBestRoute());
+            float timeTaken = (System.nanoTime() - startTime) / 1_000_000_000;
+            drawRoute(generator.getCurrentBestRoute(), generator.getBestRouteLength());
+            routeText.append("Neuberechnung benötigte:\n" + timeTaken + "\nSekunden");
+        });
+        reOptimize.setText("Route neu\nberechnen");
+        reOptimize.setVisible(true);
+
+        menu = new JPanel();
+        menu.setPreferredSize(new Dimension(200,800));
+        menu.setBackground(Color.white);
         menu.add(routeText);
+        menu.add(reOptimize);
         menu.setVisible(true);
+
         this.getContentPane().add(drawings, BorderLayout.LINE_START);
         this.getContentPane().add(menu,BorderLayout.LINE_END);
     }
 
     public void drawRoute(List<Location> route, float routeLength) {
         routeText.setText("");
-        routeShapes.removeAll(routeShapes);
+        routeShapes.clear();
+
         routeShapes.add(new Ellipse2D.Float(route.get(0).horizontalConversion() - 5, route.get(0).verticalConversion() - 5, 10, 10));
-        routeShapes.add(new Line2D.Float(route.get(0).horizontalConversion(), route.get(0).verticalConversion(),
-                                              route.get(route.size() - 1).horizontalConversion(), route.get(route.size() - 1).verticalConversion()));
         for (int i = 1; i < route.size(); i++) {
             routeShapes.add(new Ellipse2D.Float(route.get(i).horizontalConversion() - 5, route.get(i).verticalConversion() - 5, 10, 10));
             routeShapes.add(new Line2D.Float(route.get(i).horizontalConversion(), route.get(i).verticalConversion(),
                                                   route.get(i - 1).horizontalConversion(), route.get(i - 1).verticalConversion()));
         }
+        routeShapes.add(new Line2D.Float(route.get(0).horizontalConversion(), route.get(0).verticalConversion(),
+                route.get(route.size() - 1).horizontalConversion(), route.get(route.size() - 1).verticalConversion()));
+
         drawings.repaint();
         for (int i = 0; i < route.size(); i++) {
             routeText.append((i + 1) + " " + route.get(i).getName() + "\n");
         }
-        routeText.append("Gesamtlänge: " + routeLength);
+        routeText.append("Gesamtlänge: " + routeLength + " km\n");
     }
 }
