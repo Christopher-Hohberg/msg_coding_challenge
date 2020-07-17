@@ -1,4 +1,5 @@
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -20,7 +21,7 @@ public class Main {
 
     private static ArrayList<Location> readNodesFromCSV() {
         ArrayList<Location> nodes = new ArrayList<>();
-        try (Scanner sc = new Scanner(new FileReader(fileName))) {
+        try (Scanner sc = new Scanner(new InputStreamReader(new FileInputStream(fileName), StandardCharsets.UTF_8))) {
             sc.nextLine();
             while(sc.hasNextLine()) {
                 String[] line = sc.nextLine().split(",");
