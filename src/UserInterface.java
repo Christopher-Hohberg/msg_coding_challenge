@@ -40,7 +40,7 @@ public class UserInterface extends JFrame {
         germany[13] = new Line2D.Float(80, 600, 170, 615);
         germany[14] = new Line2D.Float(170, 615, 150, 750);
 
-        this.setSize(850, 800);
+        this.setSize(865, 800);
         this.setResizable(false);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setTitle("RouteOptimizer");
