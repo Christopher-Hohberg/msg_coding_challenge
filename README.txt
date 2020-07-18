@@ -1,15 +1,7 @@
 Ausführen des Programms (unter Windows 10):
 
 Schritt 1:
-Die Dateien
-- msg_coding_challenge.jar
-- msg_standorte_deutschland.csv
-aus dem Verzeichnis
-- https://github.com/Christopher-Hohberg/msg_coding_challenge/tree/master/out/artifacts/msg_coding_challenge_jar
-herunterladen und in ein beliebiges Verzeichnis kopieren (beide Dateien ins gleiche Verzeichnis)
-Falls das herunterladen der .csv Datei nicht direkt möglich ist, muss eine .txt im lokalen Zielverzeichnis erstellt werden,
-welche dann mit dem Inhalt der msg_standorte_deutschland.csv Datei gefüllt wird. Anschließend muss nurnoch die Dateiendung von
-.txt auf .csv geändert werden.
+Das gesamte Projekt als .ZIP herunterladen und in ein beliebiges lokales Verzeichnis entpacken.
 
 Schritt 2:
 Sicherstellen, dass Java Version 8 Update 261 oder später installiert ist.
@@ -19,15 +11,15 @@ Falls nicht installiert, hier ein Link zum Herunterladen der neusten Version
 Schritt 3:
 Ausführen der Datei
 - msg_coding_challenge.jar
-(Doppelklick auf die Datei)
---------------------------------------------------------------------------------------------------------------------------------------------
+zu finden in \msg_coding_challenge-master\out\artifacts\msg_coding_challenge_jar
+-----------------------------------------------------------------------------------------------------------------------------------
 
 Der verwendete Algorithmus ist eine Abwandlung des k-opt oder auch 2-opt Algorithmus.
 Ich habe mich für diesen Algorithmus entschieden, da er, auch bei größeren Eingabemengen, eine vergleichsweise kurze Laufzeit hat und dennoch
 gute bis Perfekte Ergebnisrouten erzeugen kann. Um zu verhindern, dass sich der Algorithmus zu schnell in einem Lokalen
 Maxima verliert, lasse ich ihn wiederholt über die gleiche, jedoch neu durchmischte, Eingaberoute laufen.
 
---------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------
 
 Die beste gefundene Route für die gegebene Liste von Standorten ist:
 
