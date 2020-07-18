@@ -5,6 +5,11 @@ import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Generates a simple UI that is supposed to make it easier for a user to interact with the application and understand
+ * the optimization of the route. It is based on different javax.swing and java.awt elements, and provides a method
+ * to draw a given route onto a certain display field in the UI.
+ */
 public class UserInterface extends JFrame {
     private final Shape[] germany = new Shape[16];
     private final ArrayList<Shape> routeShapes = new ArrayList<>();
@@ -22,7 +27,12 @@ public class UserInterface extends JFrame {
         this.setVisible(true);
     }
 
+    /**
+     * initializes several javax.swing and java.awt elements to form a simple UI.
+     */
     private void initComponents() {
+        //DO NOT ALTER! sketches the outlines of germany as array of Line2D Objects
+        //-------------------------------------------------------------------------
         germany[0] = new Line2D.Float(150, 750, 450, 750);
         germany[1] = new Line2D.Float(450, 750, 505, 670);
         germany[2] = new Line2D.Float(505, 670, 430, 510);
@@ -39,6 +49,8 @@ public class UserInterface extends JFrame {
         germany[12] = new Line2D.Float(70, 360, 80, 600);
         germany[13] = new Line2D.Float(80, 600, 170, 615);
         germany[14] = new Line2D.Float(170, 615, 150, 750);
+        //-------------------------------------------------------------------------
+
 
         this.setSize(865, 800);
         this.setResizable(false);
@@ -78,12 +90,12 @@ public class UserInterface extends JFrame {
         reOptimize = new JButton();
         reOptimize.addActionListener(e -> {
             float startTime = System.nanoTime();
-            generator.optimizeRoute(generator.getCurrentBestRoute());
+            generator.optimizeRoute(generator.getBestRoute());
             float timeTaken = (System.nanoTime() - startTime) / 1_000_000_000;
-            drawRoute(generator.getCurrentBestRoute(), generator.getBestRouteLength());
+            drawRoute(generator.getBestRoute(), generator.getBestRouteLength());
             routeText.append("Neuberechnung benötigte:\n" + timeTaken + "\nSekunden");
         });
-        reOptimize.setText("Route neu\nberechnen");
+        reOptimize.setText("Route optimieren");
         reOptimize.setVisible(true);
 
         menu = new JPanel();
@@ -97,6 +109,13 @@ public class UserInterface extends JFrame {
         this.getContentPane().add(menu,BorderLayout.LINE_END);
     }
 
+    /**
+     * Assembles a List of java.awt.geom Shape objects which represent the provided route, and fills the routeText
+     * textfield with the names of all Location objects in order of the route.
+     *
+     * @param route The route that is supposed to be displayed in the UI.
+     * @param routeLength The length of the route.
+     */
     public void drawRoute(List<Location> route, float routeLength) {
         routeText.setText("");
         routeShapes.clear();
